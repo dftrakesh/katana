@@ -26,7 +26,8 @@ public class KatanaSDK {
             .codecs(configurer -> configurer
                 .defaultCodecs()
                 .maxInMemorySize(16 * 1024 * 1024))
-            .build()).build();
+            .build())
+        .build();
 
     public KatanaSDK(String accessToken) {
         this.accessToken = accessToken;
