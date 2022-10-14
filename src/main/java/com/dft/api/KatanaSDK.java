@@ -85,7 +85,7 @@ public class KatanaSDK {
             .exchangeToMono(clientResponse -> handleResponse(clientResponse, SalesOrderRow.class));
     }
 
-    public Mono<SalesOrderRow> deleteSalesOrderRow(Integer id, Integer variantId) {
+    public Mono<SalesOrderRow> deleteSalesOrderRow(Integer id) {
         log.debug("API call for delete order-item with id: {}", id);
 
         final WebClient.RequestHeadersSpec<?> spec = webClient.delete()
