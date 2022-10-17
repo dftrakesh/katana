@@ -80,10 +80,11 @@ public class KatanaSDK {
     public SalesOrderRow updateSalesOrderRow(Integer id, Integer variantId) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_orders/" + id);
         uriBuilder.setParameter("variant_id", variantId.toString());
+        HttpRequest.BodyPublisher publisher = null;
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken)
-            .GET()
+            .method("PATCH", null)
             .build();
         HttpResponse.BodyHandler<SalesOrderRow> handler = new JsonBodyHandler<>(SalesOrderRow.class);
         return getRequestWrapped(request, handler);
@@ -95,7 +96,7 @@ public class KatanaSDK {
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken)
-            .GET()
+            .DELETE()
             .build();
         HttpResponse.BodyHandler<SalesOrderRow> handler = new JsonBodyHandler<>(SalesOrderRow.class);
         return getRequestWrapped(request, handler);
