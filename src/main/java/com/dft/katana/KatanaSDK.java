@@ -65,6 +65,20 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
+    public SalesOrderList getSalesOrderByECommerceId(String ecommerceOrderId, String eCommerceStoreName) {
+        URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_orders");
+        uriBuilder.setParameter("ecommerce_order_id", ecommerceOrderId);
+        uriBuilder.setParameter("ecommerce_store_name", eCommerceStoreName);
+
+        HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken)
+            .GET()
+            .build();
+        HttpResponse.BodyHandler<SalesOrderList> handler = new JsonBodyHandler<>(SalesOrderList.class);
+        return getRequestWrapped(request, handler);
+    }
+
+    @SneakyThrows
     public SalesOrderRow getSalesOrderRow(Integer id) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_orders/" + id);
 
