@@ -1,4 +1,4 @@
-package com.dft.api.variant;
+package com.dft.katana.variant;
 
 import java.time.ZonedDateTime;
 import java.util.List;

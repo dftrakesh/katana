@@ -1,4 +1,4 @@
-package com.dft.api.variant;
+package com.dft.katana.variant;
 
 import java.util.List;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

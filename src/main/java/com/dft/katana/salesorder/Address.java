@@ -1,4 +1,4 @@
-package com.dft.api.salesorder;
+package com.dft.katana.salesorder;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
