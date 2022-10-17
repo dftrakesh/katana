@@ -1,10 +1,10 @@
 package com.dft.katana.variant;
 
-import java.time.ZonedDateTime;
-import java.util.List;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -18,11 +18,11 @@ public class Variant {
     public Integer purchasePrice;
     public List<ConfigAttribute> configAttributes;
     public String type;
-    public ZonedDateTime deletedAt;
+    public String deletedAt;
     public String internalBarcode;
     public List<String> supplierItemCodes;
     public String registeredBarcode;
-    public ZonedDateTime createdAt;
-    public ZonedDateTime updatedAt;
+    public String createdAt;
+    public String updatedAt;
 
 }

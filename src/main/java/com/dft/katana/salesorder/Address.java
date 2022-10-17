@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
-import java.time.ZonedDateTime;
-
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Address {
@@ -23,8 +21,8 @@ public class Address {
     private String state;
     private String zip;
     private String country;
-    private ZonedDateTime updatedAt;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime deletedAt;
+    private String updatedAt;
+    private String createdAt;
+    private String deletedAt;
 
 }
