@@ -1,4 +1,4 @@
-package com.dft.api.salesorder;
+package com.dft.katana.salesorder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
