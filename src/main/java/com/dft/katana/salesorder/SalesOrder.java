@@ -1,10 +1,10 @@
 package com.dft.katana.salesorder;
 
-import java.time.ZonedDateTime;
-import java.util.List;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -14,14 +14,14 @@ public class SalesOrder {
     private Integer customerId;
     private String orderNo;
     private String source;
-    private ZonedDateTime orderCreatedDate;
-    private ZonedDateTime deliveryDate;
+    private String orderCreatedDate;
+    private String deliveryDate;
     private Integer locationId;
-    private ZonedDateTime pickedDate;
+    private String pickedDate;
     private String invoicingStatus;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
-    private ZonedDateTime deletedAt;
+    private String createdAt;
+    private String updatedAt;
+    private String deletedAt;
     private String ecommerceOrderType;
     private String ecommerceStoreName;
     private String ecommerceOrderId;
@@ -30,11 +30,11 @@ public class SalesOrder {
     private Integer conversionRate;
     private Double total;
     private Double totalInBaseCurrency;
-    private ZonedDateTime conversionDate;
+    private String conversionDate;
     private String productAvailability;
-    private ZonedDateTime productExpectedDate;
+    private String productExpectedDate;
     private String ingredientAvailability;
-    private ZonedDateTime ingredientExpectedDate;
+    private String ingredientExpectedDate;
     private String productionStatus;
     private String additionalInfo;
     private List<SalesOrderRow> salesOrderRows;
