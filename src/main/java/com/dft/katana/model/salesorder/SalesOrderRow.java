@@ -1,5 +1,6 @@
-package com.dft.katana.salesorder;
+package com.dft.katana.model.salesorder;
 
+import com.dft.katana.model.common.Errors;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -29,5 +30,5 @@ public class SalesOrderRow {
     private List<Attribute> attributes;
     private String linkedManufacturingOrderId;
     private List<BatchTransaction> batchTransactions;
-
+    private Errors error;
 }
