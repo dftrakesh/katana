@@ -1,10 +1,12 @@
 package com.dft.katana;
 
 import com.dft.katana.handler.JsonBodyHandler;
-import com.dft.katana.salesorder.SalesOrderList;
-import com.dft.katana.salesorder.SalesOrderRow;
-import com.dft.katana.variant.Variant;
-import com.dft.katana.variant.VariantList;
+import com.dft.katana.model.salesorder.SalesOrderList;
+import com.dft.katana.model.salesorder.SalesOrderRow;
+import com.dft.katana.model.variant.UpdateVariantRequest;
+import com.dft.katana.model.variant.Variant;
+import com.dft.katana.model.variant.VariantList;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
@@ -18,6 +20,7 @@ public class KatanaSDK {
 
     private final String accessToken;
     private final HttpClient client;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     int MAX_ATTEMPTS = 50;
     int TIME_OUT_DURATION = 15000;
 
@@ -92,13 +95,15 @@ public class KatanaSDK {
 
     @SneakyThrows
     public SalesOrderRow updateSalesOrderRow(Integer id, Integer variantId) {
-        URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_orders/" + id);
-        uriBuilder.setParameter("variant_id", variantId.toString());
-        HttpRequest.BodyPublisher publisher = null;
+        URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_order_rows/" + id);
+
+        UpdateVariantRequest updateVariantRequest = new UpdateVariantRequest(variantId);
+        String jsonBody = objectMapper.writeValueAsString(updateVariantRequest);
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken)
-            .method("PATCH", null)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();
         HttpResponse.BodyHandler<SalesOrderRow> handler = new JsonBodyHandler<>(SalesOrderRow.class);
         return getRequestWrapped(request, handler);
@@ -106,7 +111,7 @@ public class KatanaSDK {
 
     @SneakyThrows
     public SalesOrderRow deleteSalesOrderRow(Integer id) {
-        URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_orders/" + id);
+        URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_order_rows/" + id);
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken)

@@ -1,4 +1,4 @@
-package com.dft.katana.variant;
+package com.dft.katana.model.variant;
 
 import java.util.List;
 
@@ -12,6 +12,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VariantList {
 
-    public List<Variant> data;
+    private List<Variant> data;
 
 }

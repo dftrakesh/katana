@@ -1,4 +1,6 @@
-package com.dft.katana.salesorder;
+package com.dft.katana.model.salesorder;
+
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -8,7 +10,7 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BatchTransaction {
-    private String batchId;
-    private Integer quantity;
+public class SalesOrderList {
+
+    private List<SalesOrder> data;
 }

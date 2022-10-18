@@ -1,4 +1,4 @@
-package com.dft.katana.variant;
+package com.dft.katana.model.salesorder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ConfigAttribute {
+public class Attribute {
 
-    public String configName;
-    public String configValue;
+    private String key;
+    private String value;
 
 }
