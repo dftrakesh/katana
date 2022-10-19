@@ -113,15 +113,14 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
-    public String deleteSalesOrderRow(Integer id) {
+    public Void deleteSalesOrderRow(Integer id) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_order_rows/" + id);
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + this.accessToken)
             .DELETE()
             .build();
-        HttpResponse.BodyHandler<Void> handler = new JsonBodyHandler<>(Void.class);
-        return getRequestWrapped(request, HttpResponse.BodyHandlers.ofString());
+        return getRequestWrapped(request, HttpResponse.BodyHandlers.discarding());
     }
 
     private URIBuilder baseUrl(URIBuilder uriBuilder, String path) {
@@ -149,7 +148,7 @@ public class KatanaSDK {
             return CompletableFuture.completedFuture(resp.body());
         }
         if (resp.statusCode() == HttpStatus.SC_NO_CONTENT) {
-            return CompletableFuture.completedFuture((T) "Deleted Successfully");
+            return CompletableFuture.completedFuture(resp.body());
         }
         if (resp.statusCode() == HttpStatus.SC_NOT_FOUND) {
             throw new NotFoundException(objectMapper.writeValueAsString(resp.body()));
