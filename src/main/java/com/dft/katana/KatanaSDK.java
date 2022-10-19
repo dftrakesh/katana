@@ -1,5 +1,7 @@
 package com.dft.katana;
 
+import com.dft.katana.exception.NotFoundException;
+import com.dft.katana.exception.UnProcessableEntityException;
 import com.dft.katana.handler.JsonBodyHandler;
 import com.dft.katana.model.salesorder.SalesOrderList;
 import com.dft.katana.model.salesorder.SalesOrderRow;
@@ -9,6 +11,7 @@ import com.dft.katana.model.variant.VariantList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.net.http.HttpClient;
@@ -22,7 +25,7 @@ public class KatanaSDK {
     private final HttpClient client;
     private final ObjectMapper objectMapper = new ObjectMapper();
     int MAX_ATTEMPTS = 50;
-    int TIME_OUT_DURATION = 15000;
+    int TIME_OUT_DURATION = 60000;
 
     public KatanaSDK(String accessToken) {
         this.accessToken = accessToken;
@@ -110,7 +113,7 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
-    public Void deleteSalesOrderRow(Integer id) {
+    public String deleteSalesOrderRow(Integer id) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_order_rows/" + id);
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
@@ -118,7 +121,7 @@ public class KatanaSDK {
             .DELETE()
             .build();
         HttpResponse.BodyHandler<Void> handler = new JsonBodyHandler<>(Void.class);
-        return getRequestWrapped(request, HttpResponse.BodyHandlers.discarding());
+        return getRequestWrapped(request, HttpResponse.BodyHandlers.ofString());
     }
 
     private URIBuilder baseUrl(URIBuilder uriBuilder, String path) {
@@ -133,9 +136,32 @@ public class KatanaSDK {
 
         return client
             .sendAsync(request, handler)
-            .thenComposeAsync(response -> tryResend(client, request, handler, response, 1))
-            .get()
-            .body();
+            .thenComposeAsync(response -> handleUnknownError(client, request, handler, response))
+            .get();
+    }
+
+    @SneakyThrows
+    public <T> CompletableFuture<T> handleUnknownError(HttpClient client,
+                                                       HttpRequest request,
+                                                       HttpResponse.BodyHandler<T> handler,
+                                                       HttpResponse<T> resp) {
+        if (resp.statusCode() == HttpStatus.SC_OK) {
+            return CompletableFuture.completedFuture(resp.body());
+        }
+        if (resp.statusCode() == HttpStatus.SC_NO_CONTENT) {
+            return CompletableFuture.completedFuture((T) "Deleted Successfully");
+        }
+        if (resp.statusCode() == HttpStatus.SC_NOT_FOUND) {
+            throw new NotFoundException(objectMapper.writeValueAsString(resp.body()));
+        }
+        if (resp.statusCode() == HttpStatus.SC_UNPROCESSABLE_ENTITY) {
+            throw new UnProcessableEntityException(objectMapper.writeValueAsString(resp.body()));
+        }
+        if (resp.statusCode() == 429) {
+            return CompletableFuture.completedFuture(tryResend(client, request, handler, resp, 1).get().body());
+        }
+
+        throw new Exception();
     }
 
     @SneakyThrows
@@ -143,7 +169,6 @@ public class KatanaSDK {
                                                             HttpRequest request,
                                                             HttpResponse.BodyHandler<T> handler,
                                                             HttpResponse<T> resp, int count) {
-
         if (resp.statusCode() == 429 && count < MAX_ATTEMPTS) {
             Thread.sleep(TIME_OUT_DURATION);
             return client.sendAsync(request, handler)
