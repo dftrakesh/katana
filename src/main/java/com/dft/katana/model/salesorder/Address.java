@@ -10,8 +10,8 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
 
-    private Integer id;
-    private Integer salesOrderId;
+    private String id;
+    private String salesOrderId;
     private String entityType;
     private String firstName;
     private String lastName;

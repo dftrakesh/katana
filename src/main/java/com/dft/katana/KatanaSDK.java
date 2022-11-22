@@ -46,7 +46,7 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
-    public Variant getVariantById(Integer id) {
+    public Variant getVariantById(String id) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/variants/" + id);
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
@@ -85,7 +85,7 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
-    public SalesOrderRow getSalesOrderRow(Integer id) {
+    public SalesOrderRow getSalesOrderRow(String id) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_orders/" + id);
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
@@ -97,7 +97,7 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
-    public SalesOrderRow updateSalesOrderRow(Integer id, Integer variantId) {
+    public SalesOrderRow updateSalesOrderRow(String id, String variantId) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_order_rows/" + id);
 
         UpdateVariantRequest updateVariantRequest = new UpdateVariantRequest(variantId);
@@ -113,7 +113,7 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
-    public Void deleteSalesOrderRow(Integer id) {
+    public Void deleteSalesOrderRow(String id) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_order_rows/" + id);
 
         HttpRequest request = HttpRequest.newBuilder(uriBuilder.build())
