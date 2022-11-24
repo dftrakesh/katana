@@ -13,8 +13,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SalesOrder {
 
-    private String id;
-    private String customerId;
+    private Integer id;
+    private Integer customerId;
     private String orderNo;
     private String source;
     private String orderCreatedDate;
