@@ -12,5 +12,5 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UpdateVariantRequest {
 
-    private String variantId;
+    private Integer variantId;
 }

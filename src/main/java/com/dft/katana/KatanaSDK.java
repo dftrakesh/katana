@@ -97,7 +97,7 @@ public class KatanaSDK {
     }
 
     @SneakyThrows
-    public SalesOrderRow updateSalesOrderRow(String id, String variantId) {
+    public SalesOrderRow updateSalesOrderRow(String id, Integer variantId) {
         URIBuilder uriBuilder = baseUrl(new URIBuilder(), "/v1/sales_order_rows/" + id);
 
         UpdateVariantRequest updateVariantRequest = new UpdateVariantRequest(variantId);
