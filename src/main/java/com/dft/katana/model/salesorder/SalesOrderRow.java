@@ -13,10 +13,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SalesOrderRow {
 
-    public String salesOrderId;
-    private String id;
+    public Integer salesOrderId;
+    private Integer id;
     private Integer quantity;
-    private String variantId;
+    private Integer variantId;
     private Integer taxRateId;
     private String pricePerUnit;
     private Double pricePerUnitInBaseCurrency;

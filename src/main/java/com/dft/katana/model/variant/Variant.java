@@ -13,8 +13,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Variant {
 
-    private String id;
-    private String productId;
+    private Integer id;
+    private Integer productId;
     private String materialId;
     private String sku;
     private Double salesPrice;
