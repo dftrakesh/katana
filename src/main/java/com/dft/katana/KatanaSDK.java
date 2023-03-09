@@ -21,9 +21,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class KatanaSDK {
 
-    private final String accessToken;
-    private final HttpClient client;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    protected final String accessToken;
+    protected final HttpClient client;
+    protected final ObjectMapper objectMapper = new ObjectMapper();
     int MAX_ATTEMPTS = 50;
     int TIME_OUT_DURATION = 60000;
 
@@ -123,7 +123,7 @@ public class KatanaSDK {
         return getRequestWrapped(request, HttpResponse.BodyHandlers.discarding());
     }
 
-    private URIBuilder baseUrl(URIBuilder uriBuilder, String path) {
+    protected URIBuilder baseUrl(URIBuilder uriBuilder, String path) {
         return uriBuilder
             .setScheme("https")
             .setHost("api.katanamrp.com")
