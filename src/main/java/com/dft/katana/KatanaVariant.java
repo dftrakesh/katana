@@ -33,4 +33,13 @@ public class KatanaVariant extends KatanaSDK {
         HttpResponse.BodyHandler<Variant> handler = new JsonBodyHandler<>(Variant.class);
         return getRequestWrapped(request, handler);
     }
+
+    @SneakyThrows
+    public VariantList getVariants(HashMap<String, String> params) {
+        URI uri = addParameters(baseUrl("/v1/variants"), params);
+
+        HttpRequest request = get(uri);
+        HttpResponse.BodyHandler<VariantList> handler = new JsonBodyHandler<>(VariantList.class);
+        return getRequestWrapped(request, handler);
+    }
 }

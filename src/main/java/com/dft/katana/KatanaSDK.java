@@ -1,5 +1,9 @@
 package com.dft.katana;
 
+import com.dft.katana.model.common.Pagination;
+import com.dft.katana.model.inventory.InventoryWrapper;
+import com.dft.katana.model.recipe.RecipeWrapper;
+import com.dft.katana.model.variant.VariantList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 
@@ -8,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -98,6 +103,19 @@ public class KatanaSDK {
             return client.sendAsync(request, handler)
                 .thenComposeAsync(response -> tryResend(client, request, handler, response, count + 1));
         }
+        setPagination(resp);
         return CompletableFuture.completedFuture(resp);
+    }
+
+    @SneakyThrows
+    private void setPagination(HttpResponse resp) {
+        List<String> headers = resp.headers().allValues("X-Pagination");
+        if (headers.size() != 0) {
+            Pagination pagination = objectMapper.readValue(headers.get(0), Pagination.class);
+
+            if (resp.body() instanceof VariantList) ((VariantList) resp.body()).setPagination(pagination);
+            if (resp.body() instanceof InventoryWrapper) ((InventoryWrapper) resp.body()).setPagination(pagination);
+            if (resp.body() instanceof RecipeWrapper) ((RecipeWrapper) resp.body()).setPagination(pagination);
+        }
     }
 }

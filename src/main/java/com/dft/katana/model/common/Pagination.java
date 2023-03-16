@@ -1,8 +1,5 @@
-package com.dft.katana.model.variant;
+package com.dft.katana.model.common;
 
-import java.util.List;
-
-import com.dft.katana.model.common.Pagination;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,8 +8,12 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class VariantList {
+public class Pagination {
 
-    private List<Variant> data;
-    private Pagination pagination;
+    private String totalRecords;
+    private String totalPages;
+    private String offset;
+    private String page;
+    private String firstPage;
+    private String lastPage;
 }
