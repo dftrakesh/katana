@@ -4,6 +4,7 @@ import com.dft.katana.model.common.Pagination;
 import com.dft.katana.model.inventory.InventoryWrapper;
 import com.dft.katana.model.recipe.RecipeWrapper;
 import com.dft.katana.model.variant.VariantList;
+import com.dft.katana.model.webhook.WebhookWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 
@@ -16,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import static com.dft.katana.constantcodes.ConstantCode.ACCEPT;
 import static com.dft.katana.constantcodes.ConstantCode.AUTHORIZATION;
 import static com.dft.katana.constantcodes.ConstantCode.BASE_ENDPOINT;
 import static com.dft.katana.constantcodes.ConstantCode.BEARER;
+import static com.dft.katana.constantcodes.ConstantCode.CONTENT_TYPE;
 import static com.dft.katana.constantcodes.ConstantCode.HTTPS;
 
 public class KatanaSDK {
@@ -38,6 +41,8 @@ public class KatanaSDK {
     protected HttpRequest get(URI uri) {
         return HttpRequest.newBuilder(uri)
             .header(AUTHORIZATION, BEARER + accessToken)
+            .header(CONTENT_TYPE, "application/json")
+            .header(ACCEPT, "application/json")
             .GET()
             .build();
     }
@@ -46,6 +51,8 @@ public class KatanaSDK {
     protected HttpRequest patch(URI uri, String jsonBody) {
         return HttpRequest.newBuilder(uri)
             .header(AUTHORIZATION, BEARER + accessToken)
+            .header(CONTENT_TYPE, "application/json")
+            .header(ACCEPT, "application/json")
             .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();
     }
@@ -54,13 +61,26 @@ public class KatanaSDK {
     protected HttpRequest delete(URI uri) {
         return HttpRequest.newBuilder(uri)
             .header(AUTHORIZATION, BEARER + accessToken)
+            .header(CONTENT_TYPE, "application/json")
+            .header(ACCEPT, "application/json")
             .DELETE()
+            .build();
+    }
+
+    @SneakyThrows
+    protected HttpRequest post(URI uri, String jsonBody) {
+        return HttpRequest.newBuilder(uri)
+            .header(AUTHORIZATION, BEARER + accessToken)
+            .header(CONTENT_TYPE, "application/json")
+            .header(ACCEPT, "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
             .build();
     }
 
     @SneakyThrows
     protected URI addParameters(URI uri, HashMap<String, String> params) {
 
+        if (params == null) return uri;
         String query = uri.getQuery();
         StringBuilder builder = new StringBuilder();
         if (query != null)
@@ -116,6 +136,7 @@ public class KatanaSDK {
             if (resp.body() instanceof VariantList) ((VariantList) resp.body()).setPagination(pagination);
             if (resp.body() instanceof InventoryWrapper) ((InventoryWrapper) resp.body()).setPagination(pagination);
             if (resp.body() instanceof RecipeWrapper) ((RecipeWrapper) resp.body()).setPagination(pagination);
+            if (resp.body() instanceof WebhookWrapper) ((WebhookWrapper) resp.body()).setPagination(pagination);
         }
     }
 }
